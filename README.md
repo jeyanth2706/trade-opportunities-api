@@ -86,6 +86,8 @@ curl -H "X-Session-Token: <your-token>" http://localhost:8000/api/v1/analyze/tec
 
 ### `GET /api/v1/analyze/{sector}`
 
+> Note: As per best practices, the endpoint is versioned as `/api/v1/analyze/{sector}` instead of `/analyze/{sector}` mentioned in the assignment.
+
 Fetches live market data and returns a markdown analysis report.
 
 **Path parameter:** `sector` — one of the supported sector names (case-insensitive)
