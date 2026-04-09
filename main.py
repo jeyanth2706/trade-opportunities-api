@@ -402,8 +402,9 @@ app.state.search_client = search_client
 app.state.analysis_cache = analysis_cache
 
 # Include API routes
-app.include_router(router, prefix="/api/v1", tags=["analysis"])
-
+# app.include_router(router, prefix="/api/v1", tags=["analysis"])
+app.include_router(router, prefix="/api/v1")  # keeps versioned path
+app.include_router(router)   
 
 # ==================== Routes ====================
 @app.get("/", response_class=HTMLResponse)
