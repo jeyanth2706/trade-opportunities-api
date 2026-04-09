@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Trade Opportunities Analyzer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #2d2d44 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(26, 26, 46, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .nav-link:hover {
+            color: var(--accent) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(240, 147, 251, 0.1) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(240, 147, 251, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Main Container */
+        .docs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Sidebar */
+        .docs-sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .docs-sidebar h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 15px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--accent);
+            border-left-color: var(--accent);
+            padding-left: 20px;
+        }
+
+        .sidebar-link.active {
+            background: rgba(102, 126, 234, 0.3);
+            color: var(--accent);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Content Area */
+        .docs-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .docs-content h2 {
+            color: var(--accent);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .docs-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .docs-content h3 {
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .docs-content p {
+            color: #d0d0d0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .docs-content ul, .docs-content ol {
+            color: #d0d0d0;
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .docs-content li {
+            margin-bottom: 8px;
+        }
+
+        .docs-content strong {
+            color: var(--accent);
+        }
+
+        .docs-content code {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--accent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Code Block */
+        pre {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            color: #e0e0e0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        /* Endpoint Box */
+        .endpoint-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        .method-get {
+            background: rgba(16, 185, 129, 0.3);
+            color: #34d399;
+        }
+
+        .method-post {
+            background: rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+        }
+
+        .method-put {
+            background: rgba(245, 158, 11, 0.3);
+            color: #fbbf24;
+        }
+
+        .endpoint-url {
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            margin-top: 10px;
+        }
+
+        /* Parameter Table */
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .params-table thead {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .params-table th {
+            padding: 15px;
+            text-align: left;
+            color: var(--accent);
+            font-weight: 700;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .params-table td {
+            padding: 15px;
+            color: #d0d0d0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .params-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .param-type {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .param-required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .example-box h4 {
+            color: var(--success);
+            margin-bottom: 15px;
+        }
+
+        /* Badge */
+        .badge-new {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(26, 26, 46, 0.95);
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 30px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 60px;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .docs-sidebar {
+                position: static;
+                margin-bottom: 30px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .docs-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line"></i> Trade Opportunities
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="scrollToSection('endpoints')">Endpoints</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="scrollToSection('examples')">Examples</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>📚 API Documentation</h1>
+        <p>Complete guide to Trade Opportunities Analyzer REST API</p>
+    </section>
+
+    <!-- Documentation Container -->
+    <div class="docs-container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="docs-sidebar">
+                    <h3><i class="fas fa-list"></i> Contents</h3>
+                    <a href="#intro" class="sidebar-link active" onclick="setActive(this)">Introduction</a>
+                    <a href="#authentication" class="sidebar-link" onclick="setActive(this)">Authentication</a>
+                    <a href="#endpoints" class="sidebar-link" onclick="setActive(this)">Endpoints</a>
+                    <a href="#sectors" class="sidebar-link" onclick="setActive(this)">Supported Sectors</a>
+                    <a href="#responses" class="sidebar-link" onclick="setActive(this)">Response Format</a>
+                    <a href="#examples" class="sidebar-link" onclick="setActive(this)">Examples</a>
+                    <a href="#errors" class="sidebar-link" onclick="setActive(this)">Error Handling</a>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-lg-9">
+                <div class="docs-content">
+                    <!-- Introduction -->
+                    <section id="intro">
+                        <h2><i class="fas fa-rocket"></i> Introduction</h2>
+                        <p>
+                            The Trade Opportunities Analyzer API provides AI-powered market analysis for Indian sectors. 
+                            Get detailed insights, opportunities, and trends for various industries using intelligent algorithms.
+                        </p>
+                        <p>
+                            <strong>Base URL:</strong> <code>https://api.tradeopportunities.com/api/v1</code>
+                        </p>
+                        <p>
+                            <strong>API Version:</strong> 1.0
+                        </p>
+                    </section>
+
+                    <!-- Authentication -->
+                    <section id="authentication">
+                        <h2><i class="fas fa-lock"></i> Authentication</h2>
+                        <p>Currently, the API is public and doesn't require authentication. Future versions will support API key authentication.</p>
+                        <p><strong>Coming Soon:</strong> OAuth 2.0 and API Key authentication methods.</p>
+                    </section>
+
+                    <!-- Endpoints -->
+                    <section id="endpoints">
+                        <h2><i class="fas fa-link"></i> API Endpoints</h2>
+
+                        <h3>Analyze Sector</h3>
+                        <div class="endpoint-box">
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-url">/analyze/{sector}</span>
+                        </div>
+                        <p>Get detailed AI-powered market analysis for a specific sector.</p>
+
+                        <h3>Parameters</h3>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>sector</code></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td><span class="param-required">Yes</span></td>
+                                    <td>Sector name (e.g., "technology", "agriculture")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Query Parameters</h3>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>detailed</code></td>
+                                    <td><span class="param-type">boolean</span></td>
+                                    <td>false</td>
+                                    <td>Include detailed market trends</td>
+                                </tr>
+                                <tr>
+                                    <td><code>ai_powered</code></td>
+                                    <td><span class="param-type">boolean</span></td>
+                                    <td>true</td>
+                                    <td>Use AI analysis (Gemini)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Supported Sectors -->
+                    <section id="sectors">
+                        <h2><i class="fas fa-building"></i> Supported Sectors</h2>
+                        <p>The API supports analysis for the following sectors:</p>
+                        <ul>
+                            <li><strong>Technology</strong> - Softwares, Hardware, IT Services</li>
+                            <li><strong>Pharmaceuticals</strong> - Drug Manufacturing, Healthcare</li>
+                            <li><strong>Agriculture</strong> - Farming, Agribusiness, Export</li>
+                            <li><strong>Banking</strong> - Financial Services, Investments</li>
+                            <li><strong>Automobile</strong> - Manufacturing, Auto Parts, EV</li>
+                            <li><strong>IT</strong> - Information Technology Services</li>
+                            <li><strong>Energy</strong> - Renewable, Oil & Gas, Power</li>
+                            <li><strong>Retail</strong> - E-commerce, Stores, Distribution</li>
+                            <li><strong>Infrastructure</strong> - Roads, Utilities, Construction</li>
+                            <li><strong>FMCG</strong> - Fast-Moving Consumer Goods</li>
+                            <li><strong>Telecom</strong> - Telecommunications, 5G</li>
+                            <li><strong>Metals</strong> - Mining, Steel, Precious Metals</li>
+                        </ul>
+                    </section>
+
+                    <!-- Response Format -->
+                    <section id="responses">
+                        <h2><i class="fas fa-file-alt"></i> Response Format</h2>
+                        <h3>Success Response (200 OK)</h3>
+                        <pre><code>{
+  "sector": "technology",
+  "timestamp": "2026-01-15T10:30:00Z",
+  "data_sources": 15,
+  "ai_powered": true,
+  "report": "# Technology Sector Analysis\n\n...",
+  "status": "success"
+}</code></pre>
+
+                        <h3>Response Fields</h3>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>sector</code></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td>Analyzed sector name</td>
+                                </tr>
+                                <tr>
+                                    <td><code>timestamp</code></td>
+                                    <td><span class="param-type">datetime</span></td>
+                                    <td>Analysis generation time</td>
+                                </tr>
+                                <tr>
+                                    <td><code>data_sources</code></td>
+                                    <td><span class="param-type">integer</span></td>
+                                    <td>Number of data sources used</td>
+                                </tr>
+                                <tr>
+                                    <td><code>ai_powered</code></td>
+                                    <td><span class="param-type">boolean</span></td>
+                                    <td>Whether AI analysis was used</td>
+                                </tr>
+                                <tr>
+                                    <td><code>report</code></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td>Markdown formatted analysis report</td>
+                                </tr>
+                                <tr>
+                                    <td><code>status</code></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td>Response status (success/error)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Examples -->
+                    <section id="examples">
+                        <h2><i class="fas fa-code"></i> Example Requests</h2>
+
+                        <h3>Basic Analysis</h3>
+                        <div class="example-box">
+                            <h4><i class="fas fa-terminal"></i> Request</h4>
+                            <pre><code>GET /api/v1/analyze/technology</code></pre>
+                        </div>
+
+                        <h3>Detailed Analysis with AI</h3>
+                        <div class="example-box">
+                            <h4><i class="fas fa-terminal"></i> Request</h4>
+                            <pre><code>GET /api/v1/analyze/agriculture?detailed=true&ai_powered=true</code></pre>
+                        </div>
+
+                        <h3>Using cURL</h3>
+                        <pre><code>curl -X GET "https://api.tradeopportunities.com/api/v1/analyze/banking" \
+  -H "Content-Type: application/json"</code></pre>
+
+                        <h3>Using Python</h3>
+                        <pre><code>import requests
+
+response = requests.get(
+    "https://api.tradeopportunities.com/api/v1/analyze/technology"
+)
+
+data = response.json()
+print(data['report'])</code></pre>
+
+                        <h3>Using JavaScript</h3>
+                        <pre><code>fetch('/api/v1/analyze/retail')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data.report);
+  })
+  .catch(error => console.error('Error:', error));</code></pre>
+                    </section>
+
+                    <!-- Error Handling -->
+                    <section id="errors">
+                        <h2><i class="fas fa-exclamation-triangle"></i> Error Handling</h2>
+
+                        <h3>Error Response Format</h3>
+                        <pre><code>{
+  "status": "error",
+  "message": "Sector not found",
+  "code": 404
+}</code></pre>
+
+                        <h3>HTTP Status Codes</h3>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>200</td>
+                                    <td>Success</td>
+                                    <td>Analysis completed successfully</td>
+                                </tr>
+                                <tr>
+                                    <td>400</td>
+                                    <td>Bad Request</td>
+                                    <td>Invalid sector name</td>
+                                </tr>
+                                <tr>
+                                    <td>404</td>
+                                    <td>Not Found</td>
+                                    <td>Sector does not exist</td>
+                                </tr>
+                                <tr>
+                                    <td>500</td>
+                                    <td>Server Error</td>
+                                    <td>Internal processing error</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Common Errors</h3>
+                        <p>
+                            <strong>Invalid Sector:</strong> Make sure the sector name is in the supported sectors list. 
+                            Check capitalization and spelling.
+                        </p>
+                        <p>
+                            <strong>Rate Limiting:</strong> The API has rate limits. Please wait before making additional requests 
+                            if you receive a 429 status code.
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Trade Opportunities API. Powered by AI & Real-time Market Data</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">
+            <i class="fas fa-check-circle"></i> Real-time Analysis | 
+            <i class="fas fa-lock"></i> Secure | 
+            <i class="fas fa-zap"></i> Fast
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/highlight.min.js"></script>
+    <script>
+        function setActive(link) {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                setActive(this);
+            });
+        });
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
